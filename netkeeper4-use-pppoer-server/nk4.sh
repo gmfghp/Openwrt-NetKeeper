@@ -13,16 +13,17 @@ cat /dev/null > /tmp/pppoe.log
 while :
 do
     #read the last username in pppoe.log
-    if [ "$(grep 'user=' /tmp/pppoe.log | grep 'rcvd' | tail -n 1 | cut -d \" -f 5)" == "]" ]
-    then
-        username=$(grep 'user=' /tmp/pppoe.log | grep 'rcvd' | tail -n 1 | cut -d \" -f 2)
-    fi
+    var=$(grep 'user=' /root/pppoe.log | grep 'rcvd' | tail -n 1)
+    name=${var#*'"'}
+    username=${name%'" password="'*}
+    word=${var#*'" password="'}
+    password=${word%'"'*}
 
     if [ "$username" != "$username_old" ]
     then
         ifdown netkeeper
         uci set network.netkeeper.username="$username"
-        uci set network.netkeeper.password="$(grep 'user=' /tmp/pppoe.log | grep 'rcvd' | tail -n 1 | cut -d \" -f 4)"
+        uci set network.netkeeper.password="$password"
         uci commit
         ifup netkeeper
         username_old="$username"
