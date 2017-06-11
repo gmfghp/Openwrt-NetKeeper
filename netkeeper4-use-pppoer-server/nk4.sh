@@ -29,7 +29,6 @@ do
         username_old="$username"
         logger -t nk4 "new username $username"
     fi
-    
     sleep 10
 
     #close pppoe if log fail
