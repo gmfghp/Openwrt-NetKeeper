@@ -13,7 +13,7 @@ cat /dev/null > /tmp/pppoe.log
 while :
 do
     #read the last username in pppoe.log
-    var=$(grep 'user=' /root/pppoe.log | grep 'rcvd' | tail -n 1)
+    var=$(grep 'user=' /tmp/pppoe.log | grep 'rcvd' | tail -n 1)
     name=${var#*'"'}
     username=${name%'" password="'*}
     word=${var#*'" password="'}
