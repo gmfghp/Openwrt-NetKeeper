@@ -36,5 +36,14 @@ do
     then
         ifdown netkeeper
     fi
+    	
+	#clear logs everyday
+	if [ "$(date '+%T' | cut -b 1-5)" == "00:00" ]
+	then
+		cat /dev/null > /tmp/pppoe.log
+		sleep 10
+		echo "$var" >> /tmp/pppoe.log
+		sleep 10
+	fi
 
 done
