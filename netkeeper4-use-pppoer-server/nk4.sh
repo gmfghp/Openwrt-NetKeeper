@@ -13,10 +13,11 @@ cat /dev/null > /tmp/pppoe.log
 while :
 do
     #read the last username in pppoe.log
-    if [ "$(grep 'user=' /tmp/pppoe.log | grep 'rcvd' | tail -n 1 | cut -d \" -f 5)" == "]" ]
-    then
-        username=$(grep 'user=' /tmp/pppoe.log | grep 'rcvd' | tail -n 1 | cut -d \" -f 2)
-    fi
+    userinfo=$(grep 'user=' /tmp/pppoe.log | grep 'rcvd' | tail -n 1)
+    name=${userinfo#*'"'}
+    username=${name%'" password="'*}
+    word=${userinfo#*'" password="'}
+    password=${word%'"]'}
 
     if [ "$username" != "$username_old" ]
     then
@@ -35,6 +36,16 @@ do
     if [ -z "$(ifconfig | grep "netkeeper")" ]
     then
         ifdown netkeeper
+    else
+		sleep 50
     fi
-
+    
+	#clear logs everyday
+	if [ "$(date '+%T' | cut -b 1-5)" == "00:00" ]
+	then
+		cat /dev/null > /tmp/pppoe.log
+		sleep 10
+		echo "$userinfo" >> /tmp/pppoe.log
+		sleep 10
+	fi
 done
