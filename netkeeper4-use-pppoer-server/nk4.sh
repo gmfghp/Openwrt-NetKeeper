@@ -35,6 +35,8 @@ do
     if [ -z "$(ifconfig | grep "netkeeper")" ]
     then
         ifdown netkeeper
+    else
+	sleep 50
     fi
     	
 	#clear logs everyday
