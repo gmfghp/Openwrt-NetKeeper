@@ -40,7 +40,7 @@ do
     fi
     	
 	#clear logs everyday
-	if [ "$(date '+%T' | cut -b 1-4)" == "00:0" ]
+	if [ "$(date '+%T' | cut -b 1-5)" == "00:00" ] || [ "$(date '+%T' | cut -b 1-5)" == "00:01" ]
 	then
 		cat /dev/null > /tmp/pppoe.log
 		sleep 10
